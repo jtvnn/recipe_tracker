@@ -11,6 +11,55 @@ body {
   text-align: center;
 }
 
+/* Responsive adjustments for mobile */
+@media (max-width: 600px) {
+  #root {
+    padding: 0.5rem;
+  }
+  .app-container {
+    max-width: 100vw;
+    margin: 0.5rem 0;
+    padding: 1rem 0.25rem;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+  }
+  form {
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  input[type="text"], textarea {
+    font-size: 1em;
+    padding: 0.5rem;
+  }
+  button, .btn-link {
+    width: 100%;
+    font-size: 1.1em;
+    padding: 0.75rem 0;
+    margin-bottom: 0.5rem;
+  }
+  ul {
+    padding: 0;
+  }
+  li {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 0.75rem 0.25rem;
+    font-size: 1em;
+  }
+  li button {
+    margin: 0.5rem 0 0 0;
+    width: 100%;
+  }
+  .logo {
+    height: 3em;
+    padding: 0.5em;
+  }
+  h1 {
+    font-size: 2em;
+  }
+}
+
 .logo {
   height: 6em;
   padding: 1.5em;
