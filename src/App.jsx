@@ -81,9 +81,19 @@ function App() {
         <h1 className="text-primary fw-bold">Recipe Tracker</h1>
         <Button color="danger" onClick={handleLogout}>Logout</Button>
       </div>
-      <SpoonacularSearch onImport={handleImport} />
-      <RecipeForm editingRecipe={editingRecipe} onSave={handleSave} />
-      <RecipeList onEdit={handleEdit} />
+      <div className="row g-3 flex-lg-nowrap">
+        {/* Sidebar: Recipe List */}
+        <div className="col-12 col-lg-4 mb-3 mb-lg-0">
+          <div className="sidebar bg-white rounded shadow-sm p-3 h-100">
+            <RecipeList onEdit={handleEdit} />
+          </div>
+        </div>
+        {/* Main content: Form and Search */}
+        <div className="col-12 col-lg-8">
+          <SpoonacularSearch onImport={handleImport} />
+          <RecipeForm editingRecipe={editingRecipe} onSave={handleSave} />
+        </div>
+      </div>
     </div>
   );
 }
