@@ -9,7 +9,7 @@ const PORT = 4000;
 
 
 app.use(cors({
-  origin: 'https://your-frontend.vercel.app', // Replace with your actual Vercel URL
+  origin: 'https://recipe-tracker-eosin.vercel.app', // Updated to actual deployed Vercel frontend URL
   credentials: true
 }));
 app.use(express.json());
