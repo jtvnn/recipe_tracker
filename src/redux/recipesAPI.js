@@ -1,5 +1,5 @@
 // recipesAPI.js
-const API_URL = 'http://localhost:4000/recipes';
+const API_URL = 'https://recipe-tracker-1-lqbn.onrender.com/recipes';
 
 function getAuthHeader() {
   const token = localStorage.getItem('token');
