@@ -83,11 +83,11 @@ function App() {
       </div>
       <div className="row g-3 flex-lg-nowrap">
         {/* Sidebar: Recipe List */}
-        <div className="col-12 col-lg-4 mb-3 mb-lg-0">
-          <div className="sidebar bg-white rounded shadow-sm p-3 h-100">
+        <aside className="col-12 col-lg-4 mb-3 mb-lg-0">
+          <section className="sidebar-section sidebar bg-white rounded shadow-sm p-3 h-100">
             <RecipeList onEdit={handleEdit} />
-          </div>
-        </div>
+          </section>
+        </aside>
         {/* Main content: Form and Search */}
         <div className="col-12 col-lg-8">
           <SpoonacularSearch onImport={handleImport} />
