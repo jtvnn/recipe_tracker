@@ -94,6 +94,9 @@ function App() {
           <RecipeForm editingRecipe={editingRecipe} onSave={handleSave} />
         </div>
       </div>
+      <footer className="app-footer mt-5 text-center text-muted small">
+        &copy; {new Date().getFullYear()} Recipe Tracker by jtvnn
+      </footer>
     </div>
   );
 }

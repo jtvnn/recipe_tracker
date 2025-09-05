@@ -1,3 +1,10 @@
+/* Footer styles */
+.app-footer {
+  padding: 1.5rem 0 0.5rem 0;
+  color: #888;
+  font-size: 0.95em;
+  letter-spacing: 0.02em;
+}
 /* Visually distinct sidebar section */
 .sidebar-section {
   background: #f4f6fb;
