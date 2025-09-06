@@ -84,7 +84,7 @@ export default function MealPlannerDnD() {
 
   // When reduxPlan changes (from backend), update local state and localStorage
   useEffect(() => {
-    if (reduxPlan && Object.keys(reduxPlan).length > 0) {
+    if (reduxPlan !== undefined) {
       setPlan(reduxPlan);
       localStorage.setItem('mealPlan', JSON.stringify(reduxPlan));
     }
