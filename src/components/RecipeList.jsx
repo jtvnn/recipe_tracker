@@ -60,29 +60,6 @@ export default function RecipeList({ onEdit }) {
         >
           {showFavorites ? 'Show All' : 'Show Favorites'}
         </button>
-      </div>
-      <ListGroup>
-        {filteredRecipes.map(recipe => (
-            <ListGroupItem key={recipe.id} className="flex-column align-items-start">
-            <div className="flex-grow-1 d-flex align-items-center">
-              <button
-                className="favorite-star-btn me-2"
-                title={recipe.favorite ? 'Unfavorite' : 'Favorite'}
-                onClick={() => dispatch(toggleFavorite(recipe.id))}
-                aria-label={recipe.favorite ? 'Unfavorite' : 'Favorite'}
-              >
-                <span
-                  style={{
-                    fontSize: '1.7em',
-                    color: recipe.favorite ? '#ffc107' : '#bbb',
-                    transition: 'color 0.2s, transform 0.1s',
-                    verticalAlign: 'middle',
-                    textShadow: recipe.favorite ? '0 2px 8px #ffe066' : 'none',
-                  }}
-                >
-                  {recipe.favorite ? '★' : '☆'}
-                </span>
-              </button>
               <span className="fw-bold">{recipe.name}</span>
               <div className="text-muted small ms-2">
                 {recipe.ingredients
@@ -91,16 +68,14 @@ export default function RecipeList({ onEdit }) {
                     : recipe.ingredients
                   : ''}
               </div>
-            </div>
               <div className="d-flex flex-wrap gap-2 mt-2">
               <Button color="secondary" size="sm" className="me-2" onClick={() => onEdit(recipe)}>
                 Edit
               </Button>
               <Button
-                color="warning"
-                size="md"
-                className="me-2 fw-semibold px-3 py-1 border border-2 border-warning shadow-sm"
-                style={{ fontSize: '1em', background: 'linear-gradient(90deg, #ffe066 0%, #ffd700 100%)', color: '#333' }}
+                color="info"
+                size="sm"
+                className="me-2"
                 onClick={() => handleShare(recipe)}
               >
                 <span role="img" aria-label="Share" style={{ fontSize: '1.1em', marginRight: '0.4em' }}>📤</span>
