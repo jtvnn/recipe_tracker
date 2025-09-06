@@ -12,26 +12,12 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+
 import authRouter from './auth.js';
 import authMiddleware from './authMiddleware.js';
 const app = express();
-const upload = multer({ dest: path.join(__dirname, 'uploads') });
-// Serve uploaded images statically
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-// Image upload endpoint
-app.post('/upload', authMiddleware, upload.single('image'), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-  // Return the relative path to the uploaded file
-  res.json({ imageUrl: `/uploads/${req.file.filename}` });
-});
-// Add /api/upload for production compatibility
-app.post('/api/upload', authMiddleware, upload.single('image'), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-  res.json({ imageUrl: `/uploads/${req.file.filename}` });
-});
-const PORT = 4000;
 
-
+// --- CORS config: must be first ---
 const allowedOrigins = [
   'https://recipe-tracker-eosin.vercel.app',
   'http://localhost:5173',
@@ -41,7 +27,6 @@ const allowedOrigins = [
 ];
 app.use(cors({
   origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps, curl, etc.)
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
       return callback(null, true);
@@ -49,10 +34,42 @@ app.use(cors({
       return callback(new Error('Not allowed by CORS'));
     }
   },
-  credentials: true
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  optionsSuccessStatus: 200
 }));
+// Catch-all OPTIONS for preflight
+app.options('*', cors({
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  optionsSuccessStatus: 200
+}));
+// --- End CORS config ---
+
+const upload = multer({ dest: path.join(__dirname, 'uploads') });
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use(express.json());
 app.use('/auth', authRouter);
+// Image upload endpoint
+app.post('/upload', authMiddleware, upload.single('image'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+  res.json({ imageUrl: `/uploads/${req.file.filename}` });
+});
+app.post('/api/upload', authMiddleware, upload.single('image'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+  res.json({ imageUrl: `/uploads/${req.file.filename}` });
+});
+const PORT = 4000;
 
 
 // Store recipes per user: { [email]: [recipe, ...] }
