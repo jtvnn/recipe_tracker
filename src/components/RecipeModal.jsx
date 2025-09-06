@@ -3,7 +3,7 @@ import { Modal, Button, Form } from 'react-bootstrap';
 
 const RecipeModal = ({ show, handleClose, handleSave, initialData }) => {
   const [form, setForm] = useState({
-    title: '',
+    name: '',
     ingredients: '',
     instructions: '',
   });
@@ -11,12 +11,12 @@ const RecipeModal = ({ show, handleClose, handleSave, initialData }) => {
   useEffect(() => {
     if (initialData) {
       setForm({
-        title: initialData.title || '',
+        name: initialData.name || '',
         ingredients: initialData.ingredients || '',
         instructions: initialData.instructions || '',
       });
     } else {
-      setForm({ title: '', ingredients: '', instructions: '' });
+      setForm({ name: '', ingredients: '', instructions: '' });
     }
   }, [initialData, show]);
 
@@ -37,11 +37,11 @@ const RecipeModal = ({ show, handleClose, handleSave, initialData }) => {
       <Form onSubmit={onSubmit}>
         <Modal.Body>
           <Form.Group className="mb-3">
-            <Form.Label>Title</Form.Label>
+            <Form.Label>Recipe Name</Form.Label>
             <Form.Control
               type="text"
-              name="title"
-              value={form.title}
+              name="name"
+              value={form.name}
               onChange={onChange}
               required
             />
