@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import RecipeList from './components/RecipeList';
-import RecipeForm from './components/RecipeForm';
+import RecipeModal from './components/RecipeModal';
 import MealPlannerDnD from './components/MealPlannerDnD';
 import AuthForm from './components/AuthForm';
 import SpoonacularSearch from './components/SpoonacularSearch';
@@ -15,13 +15,28 @@ import './App.css';
 
 function App() {
   const [editingRecipe, setEditingRecipe] = useState(null);
+  const [showRecipeModal, setShowRecipeModal] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authError, setAuthError] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
   const dispatch = useDispatch();
 
-  const handleEdit = (recipe) => setEditingRecipe(recipe);
-  const handleSave = () => setEditingRecipe(null);
+  const handleEdit = (recipe) => {
+    setEditingRecipe(recipe);
+    setShowRecipeModal(true);
+  };
+  const handleAdd = () => {
+    setEditingRecipe(null);
+    setShowRecipeModal(true);
+  };
+  const handleSave = () => {
+    setEditingRecipe(null);
+    setShowRecipeModal(false);
+  };
+  const handleCloseModal = () => {
+    setEditingRecipe(null);
+    setShowRecipeModal(false);
+  };
 
   // Real auth handler
   const handleAuth = async ({ email, password }) => {
@@ -35,7 +50,7 @@ function App() {
       } else {
         setAuthError(res.error || 'Authentication failed');
       }
-    } catch (err) {
+    } catch {
       setAuthError('Server error');
     }
   };
@@ -75,7 +90,7 @@ function App() {
       };
       await dispatch(addRecipe(imported)).unwrap();
       dispatch(getRecipes()); // Refresh the recipe list
-    } catch (e) {
+    } catch {
       alert('Failed to import recipe.');
     }
   };
@@ -90,6 +105,10 @@ function App() {
         {/* Sidebar: Recipe List */}
         <aside className="col-12 col-lg-4 mb-3 mb-lg-0">
           <section className="sidebar-section sidebar bg-white rounded shadow-sm p-3 h-100">
+            <div className="d-flex justify-content-between align-items-center mb-2">
+              <span className="fw-bold">My Recipes</span>
+              <Button color="primary" size="sm" onClick={handleAdd}>Add Recipe</Button>
+            </div>
             <RecipeList onEdit={handleEdit} />
           </section>
         </aside>
@@ -97,9 +116,15 @@ function App() {
         <div className="col-12 col-lg-8">
           <MealPlannerDnD />
           <SpoonacularSearch onImport={handleImport} />
-          <RecipeForm editingRecipe={editingRecipe} onSave={handleSave} />
         </div>
       </div>
+      <RecipeModal
+        show={showRecipeModal}
+        handleClose={handleCloseModal}
+        handleSave={handleSave}
+        editingRecipe={editingRecipe}
+        onSave={handleSave}
+      />
       <footer className="app-footer mt-5 text-center text-muted small">
         &copy; {new Date().getFullYear()} Recipe Tracker by jtvnn
       </footer>
