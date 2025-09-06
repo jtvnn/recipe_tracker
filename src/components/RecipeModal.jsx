@@ -47,7 +47,7 @@ const RecipeModal = ({ show, handleClose, handleSave, initialData }) => {
     const formData = new FormData();
     formData.append('image', imageFile);
     try {
-      const res = await fetch('/api/upload', {
+  const res = await fetch('/upload', {
         method: 'POST',
         body: formData,
       });
