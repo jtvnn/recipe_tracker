@@ -98,12 +98,12 @@ export default function RecipeList({ onEdit }) {
               </Button>
               <Button
                 color="warning"
-                size="lg"
-                className="me-2 fw-bold px-4 py-2 border border-3 border-warning shadow-lg"
-                style={{ fontSize: '1.3em', background: 'linear-gradient(90deg, #ffe066 0%, #ffd700 100%)', color: '#333', textShadow: '0 2px 8px #fff59d', boxShadow: '0 4px 16px #ffd70088' }}
+                size="md"
+                className="me-2 fw-semibold px-3 py-1 border border-2 border-warning shadow-sm"
+                style={{ fontSize: '1em', background: 'linear-gradient(90deg, #ffe066 0%, #ffd700 100%)', color: '#333' }}
                 onClick={() => handleShare(recipe)}
               >
-                <span role="img" aria-label="Share" style={{ fontSize: '1.5em', marginRight: '0.5em' }}>📤</span>
+                <span role="img" aria-label="Share" style={{ fontSize: '1.1em', marginRight: '0.4em' }}>📤</span>
                 Share
               </Button>
               <Button color="danger" size="sm" onClick={() => dispatch(deleteRecipe(recipe.id))}>
