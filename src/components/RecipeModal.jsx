@@ -1,12 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, Form } from 'react-bootstrap';
+import { Modal, Button, Form, Image, Spinner } from 'react-bootstrap';
 
 const RecipeModal = ({ show, handleClose, handleSave, initialData }) => {
   const [form, setForm] = useState({
     name: '',
     ingredients: '',
     instructions: '',
+    imageUrl: '',
   });
+  const [imageFile, setImageFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState('');
+  const [uploading, setUploading] = useState(false);
 
   useEffect(() => {
     if (initialData) {
@@ -14,19 +18,56 @@ const RecipeModal = ({ show, handleClose, handleSave, initialData }) => {
         name: initialData.name || '',
         ingredients: initialData.ingredients || '',
         instructions: initialData.instructions || '',
+        imageUrl: initialData.imageUrl || '',
       });
+      setPreviewUrl(initialData.imageUrl || '');
     } else {
-      setForm({ name: '', ingredients: '', instructions: '' });
+      setForm({ name: '', ingredients: '', instructions: '', imageUrl: '' });
+      setPreviewUrl('');
     }
+    setImageFile(null);
+    setUploading(false);
   }, [initialData, show]);
 
   const onChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const onSubmit = (e) => {
+  const onImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
+  const uploadImage = async () => {
+    if (!imageFile) return '';
+    setUploading(true);
+    const formData = new FormData();
+    formData.append('image', imageFile);
+    try {
+      const res = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+      const data = await res.json();
+      setUploading(false);
+      return data.imageUrl || '';
+    } catch (err) {
+      setUploading(false);
+      alert('Image upload failed.');
+      return '';
+    }
+  };
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    handleSave(form);
+    let imageUrl = form.imageUrl;
+    if (imageFile) {
+      imageUrl = await uploadImage();
+    }
+    handleSave({ ...form, imageUrl });
   };
 
   return (
@@ -34,7 +75,7 @@ const RecipeModal = ({ show, handleClose, handleSave, initialData }) => {
       <Modal.Header closeButton>
         <Modal.Title>{initialData ? 'Edit Recipe' : 'Add Recipe'}</Modal.Title>
       </Modal.Header>
-      <Form onSubmit={onSubmit}>
+      <Form onSubmit={onSubmit} encType="multipart/form-data">
         <Modal.Body>
           <Form.Group className="mb-3">
             <Form.Label>Recipe Name</Form.Label>
@@ -66,12 +107,28 @@ const RecipeModal = ({ show, handleClose, handleSave, initialData }) => {
               required
             />
           </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Recipe Image</Form.Label>
+            <Form.Control
+              type="file"
+              accept="image/*"
+              onChange={onImageChange}
+            />
+            {uploading && (
+              <div className="mt-2"><Spinner animation="border" size="sm" /> Uploading...</div>
+            )}
+            {previewUrl && (
+              <div className="mt-2">
+                <Image src={previewUrl} alt="Preview" thumbnail style={{ maxHeight: 200 }} />
+              </div>
+            )}
+          </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
+          <Button variant="secondary" onClick={handleClose} disabled={uploading}>
             Cancel
           </Button>
-          <Button variant="primary" type="submit">
+          <Button variant="primary" type="submit" disabled={uploading}>
             Save
           </Button>
         </Modal.Footer>

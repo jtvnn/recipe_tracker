@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getRecipes, deleteRecipe, toggleFavorite } from '../redux/recipesSlice';
 import { ListGroup, ListGroupItem, Button } from 'reactstrap';
+import { Image } from 'react-bootstrap';
 
 
 function getShareUrl(recipeId) {
@@ -60,6 +61,20 @@ export default function RecipeList({ onEdit }) {
         >
           {showFavorites ? 'Show All' : 'Show Favorites'}
         </button>
+      </div>
+      <ListGroup>
+        {filteredRecipes.map(recipe => (
+          <ListGroupItem key={recipe.id} className="d-flex align-items-start gap-3">
+            {recipe.imageUrl && (
+              <Image
+                src={recipe.imageUrl.startsWith('http') ? recipe.imageUrl : `/uploads/${recipe.imageUrl}`}
+                alt={recipe.name}
+                thumbnail
+                style={{ width: 80, height: 80, objectFit: 'cover' }}
+                className="me-2"
+              />
+            )}
+            <div className="flex-grow-1">
               <span className="fw-bold">{recipe.name}</span>
               <div className="text-muted small ms-2">
                 {recipe.ingredients
@@ -69,21 +84,22 @@ export default function RecipeList({ onEdit }) {
                   : ''}
               </div>
               <div className="d-flex flex-wrap gap-2 mt-2">
-              <Button color="secondary" size="sm" className="me-2" onClick={() => onEdit(recipe)}>
-                Edit
-              </Button>
-              <Button
-                color="info"
-                size="sm"
-                className="me-2"
-                onClick={() => handleShare(recipe)}
-              >
-                <span role="img" aria-label="Share" style={{ fontSize: '1.1em', marginRight: '0.4em' }}>📤</span>
-                Share
-              </Button>
-              <Button color="danger" size="sm" onClick={() => dispatch(deleteRecipe(recipe.id))}>
-                Delete
-              </Button>
+                <Button color="secondary" size="sm" className="me-2" onClick={() => onEdit(recipe)}>
+                  Edit
+                </Button>
+                <Button
+                  color="info"
+                  size="sm"
+                  className="me-2"
+                  onClick={() => handleShare(recipe)}
+                >
+                  <span role="img" aria-label="Share" style={{ fontSize: '1.1em', marginRight: '0.4em' }}>📤</span>
+                  Share
+                </Button>
+                <Button color="danger" size="sm" onClick={() => dispatch(deleteRecipe(recipe.id))}>
+                  Delete
+                </Button>
+              </div>
             </div>
           </ListGroupItem>
         ))}

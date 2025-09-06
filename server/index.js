@@ -1,6 +1,7 @@
 
 // ...existing code (keep only one set of imports, app, PORT, userRecipes, and favorite route)...
 import express from 'express';
+import multer from 'multer';
 import cors from 'cors';
 import path from 'path';
 import { promises as fs } from 'fs';
@@ -9,6 +10,15 @@ import { fileURLToPath } from 'url';
 import authRouter from './auth.js';
 import authMiddleware from './authMiddleware.js';
 const app = express();
+const upload = multer({ dest: 'server/uploads/' });
+// Serve uploaded images statically
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Image upload endpoint
+app.post('/upload', authMiddleware, upload.single('image'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+  // Return the relative path to the uploaded file
+  res.json({ imageUrl: `/uploads/${req.file.filename}` });
+});
 const PORT = 4000;
 
 
