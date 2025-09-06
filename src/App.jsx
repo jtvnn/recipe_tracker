@@ -8,7 +8,7 @@ import { Button } from 'reactstrap';
 import { login, register } from './redux/authAPI';
 import { useDispatch } from 'react-redux';
 import { clearRecipes } from './redux/recipesSlice';
-import { addRecipe, getRecipes } from './redux/recipesSlice';
+import { addRecipe, editRecipe, getRecipes } from './redux/recipesSlice';
 import { fetchSpoonacularRecipeDetails } from './redux/spoonacularAPI';
 import './App.css';
 
@@ -29,9 +29,19 @@ function App() {
     setEditingRecipe(null);
     setShowRecipeModal(true);
   };
-  const handleSave = () => {
+  const handleSave = async (form) => {
+    if (editingRecipe && editingRecipe.id) {
+      await dispatch(
+        editRecipe({ id: editingRecipe.id, updatedRecipe: { ...editingRecipe, ...form, id: editingRecipe.id } })
+      ).unwrap();
+    } else {
+      await dispatch(
+        addRecipe(form)
+      ).unwrap();
+    }
     setEditingRecipe(null);
     setShowRecipeModal(false);
+    dispatch(getRecipes());
   };
   const handleCloseModal = () => {
     setEditingRecipe(null);
@@ -123,7 +133,6 @@ function App() {
         handleClose={handleCloseModal}
         handleSave={handleSave}
         initialData={editingRecipe}
-        onSave={handleSave}
       />
       <footer className="app-footer mt-5 text-center text-muted small">
         &copy; {new Date().getFullYear()} Recipe Tracker by jtvnn
