@@ -1,3 +1,25 @@
+/* Favorite star button styles */
+.favorite-star-btn {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  padding: 0;
+  cursor: pointer;
+  line-height: 1;
+  text-decoration: none !important;
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.1s;
+}
+.favorite-star-btn:hover span {
+  color: #ffb300 !important;
+  transform: scale(1.15) rotate(-8deg);
+  text-shadow: 0 2px 12px #ffe066;
+}
+.favorite-star-btn:active span {
+  transform: scale(0.95);
+}
 /* Footer styles */
 .app-footer {
   padding: 1.5rem 0 0.5rem 0;

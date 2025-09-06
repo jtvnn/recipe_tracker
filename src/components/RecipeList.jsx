@@ -42,13 +42,22 @@ export default function RecipeList({ onEdit }) {
           <ListGroupItem key={recipe.id} className="d-flex justify-content-between align-items-center">
             <div className="flex-grow-1 d-flex align-items-center">
               <button
-                className="btn btn-link p-0 me-2"
+                className="favorite-star-btn me-2"
                 title={recipe.favorite ? 'Unfavorite' : 'Favorite'}
                 onClick={() => dispatch(toggleFavorite(recipe.id))}
-                style={{ fontSize: '1.3em', color: recipe.favorite ? '#ffc107' : '#bbb', transition: 'color 0.2s' }}
                 aria-label={recipe.favorite ? 'Unfavorite' : 'Favorite'}
               >
-                {recipe.favorite ? '★' : '☆'}
+                <span
+                  style={{
+                    fontSize: '1.7em',
+                    color: recipe.favorite ? '#ffc107' : '#bbb',
+                    transition: 'color 0.2s, transform 0.1s',
+                    verticalAlign: 'middle',
+                    textShadow: recipe.favorite ? '0 2px 8px #ffe066' : 'none',
+                  }}
+                >
+                  {recipe.favorite ? '★' : '☆'}
+                </span>
               </button>
               <span className="fw-bold">{recipe.name}</span>
               <div className="text-muted small ms-2">
