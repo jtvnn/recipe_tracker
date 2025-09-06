@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { getMealPlan, setMealPlan } from '../redux/mealPlanSlice';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -68,22 +69,44 @@ function DayDropZone({ day, assignedRecipes, onDrop, onRemove, recipes }) {
 
 export default function MealPlannerDnD() {
   const recipes = useSelector(state => state.recipes.recipes);
+  const reduxPlan = useSelector(state => state.mealPlan.plan);
+  const dispatch = useDispatch();
   // plan: { [day]: [recipeId, ...] }
   const [plan, setPlan] = useState({});
+  // Load plan from localStorage and backend on mount
+  useEffect(() => {
+    const local = localStorage.getItem('mealPlan');
+    if (local) {
+      setPlan(JSON.parse(local));
+    }
+    dispatch(getMealPlan());
+  }, [dispatch]);
+
+  // When reduxPlan changes (from backend), update local state and localStorage
+  useEffect(() => {
+    if (reduxPlan && Object.keys(reduxPlan).length > 0) {
+      setPlan(reduxPlan);
+      localStorage.setItem('mealPlan', JSON.stringify(reduxPlan));
+    }
+  }, [reduxPlan]);
+
+  const persistPlan = (newPlan) => {
+    setPlan(newPlan);
+    localStorage.setItem('mealPlan', JSON.stringify(newPlan));
+    dispatch(setMealPlan(newPlan));
+  };
 
   const handleDrop = (day, recipeId) => {
-    setPlan(prev => {
-      const prevList = prev[day] || [];
-      if (prevList.includes(recipeId)) return prev; // Prevent duplicates
-      return { ...prev, [day]: [...prevList, recipeId] };
-    });
+    const prevList = plan[day] || [];
+    if (prevList.includes(recipeId)) return;
+    const newPlan = { ...plan, [day]: [...prevList, recipeId] };
+    persistPlan(newPlan);
   };
 
   const handleRemove = (day, recipeId) => {
-    setPlan(prev => {
-      const prevList = prev[day] || [];
-      return { ...prev, [day]: prevList.filter(id => id !== recipeId) };
-    });
+    const prevList = plan[day] || [];
+    const newPlan = { ...plan, [day]: prevList.filter(id => id !== recipeId) };
+    persistPlan(newPlan);
   };
 
   return (

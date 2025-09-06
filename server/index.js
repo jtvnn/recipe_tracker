@@ -30,8 +30,24 @@ app.use(cors({
 app.use(express.json());
 app.use('/auth', authRouter);
 
+
 // Store recipes per user: { [email]: [recipe, ...] }
 let userRecipes = {};
+// Store meal plans per user: { [email]: { [day]: [recipeId, ...] } }
+let userMealPlans = {};
+// Get meal plan for user
+app.get('/mealplan', authMiddleware, (req, res) => {
+  const email = req.user.email;
+  res.json(userMealPlans[email] || {});
+});
+
+// Save meal plan for user
+app.post('/mealplan', authMiddleware, (req, res) => {
+  const email = req.user.email;
+  const { plan } = req.body;
+  userMealPlans[email] = plan;
+  res.json({ success: true });
+});
 
 app.get('/recipes', authMiddleware, (req, res) => {
   const email = req.user.email;
