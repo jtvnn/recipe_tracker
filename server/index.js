@@ -3,14 +3,19 @@
 import express from 'express';
 import multer from 'multer';
 import cors from 'cors';
+
 import path from 'path';
 import { promises as fs } from 'fs';
 import { fileURLToPath } from 'url';
 
+// Fix __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 import authRouter from './auth.js';
 import authMiddleware from './authMiddleware.js';
 const app = express();
-const upload = multer({ dest: 'server/uploads/' });
+const upload = multer({ dest: path.join(__dirname, 'uploads') });
 // Serve uploaded images statically
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Image upload endpoint
@@ -49,8 +54,6 @@ let userRecipes = {};
 let userMealPlans = {};
 
 // File-based persistence for meal plans
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 const MEALPLANS_FILE = path.join(__dirname, 'mealplans.json');
 
 async function readMealPlans() {
