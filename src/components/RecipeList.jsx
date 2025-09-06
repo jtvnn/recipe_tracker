@@ -77,10 +77,10 @@ export default function RecipeList({ onEdit }) {
             <div className="flex-grow-1 d-flex align-items-start">
               <span className="fw-bold me-2">{recipe.name}</span>
               <Button
-                color="link"
+                color={recipe.favorite ? 'warning' : 'outline-secondary'}
                 size="sm"
-                className="p-0 m-0 align-self-center"
-                style={{ color: recipe.favorite ? '#FFD700' : '#bbb', fontSize: '1.5em', textDecoration: 'none' }}
+                className="flex-fill d-flex justify-content-center align-items-center"
+                style={{ fontWeight: 'bold', fontSize: '1em', height: '32px' }}
                 onClick={() => dispatch(toggleFavorite(recipe.id))}
                 aria-label={recipe.favorite ? 'Unfavorite' : 'Favorite'}
                 title={recipe.favorite ? 'Unfavorite' : 'Favorite'}
