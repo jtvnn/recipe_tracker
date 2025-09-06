@@ -1,17 +1,4 @@
-// ...existing code...
-// Toggle favorite status for a recipe
-app.patch('/recipes/:id/favorite', authMiddleware, (req, res) => {
-  const email = req.user.email;
-  const id = Number(req.params.id);
-  const userList = userRecipes[email] || [];
-  const index = userList.findIndex(r => r.id === id);
-  if (index !== -1) {
-    userList[index].favorite = !userList[index].favorite;
-    res.json({ id, favorite: userList[index].favorite });
-  } else {
-    res.status(404).json({ error: 'Recipe not found' });
-  }
-});
+// ...existing code (keep only one set of imports, app, PORT, userRecipes, and favorite route)...
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
@@ -23,7 +10,11 @@ const PORT = 4000;
 
 
 app.use(cors({
-  origin: 'https://recipe-tracker-eosin.vercel.app', // Updated to actual deployed Vercel frontend URL
+  origin: [
+    'https://recipe-tracker-eosin.vercel.app',
+    'http://localhost:5173',
+    'http://127.0.0.1:5173'
+  ],
   credentials: true
 }));
 app.use(express.json());
