@@ -1,3 +1,69 @@
+/* Dark theme styles */
+.dark-theme {
+  background: #181a1b !important;
+  color: #e5e7eb !important;
+}
+.dark-theme .bg-white,
+.dark-theme .sidebar-section,
+.dark-theme .card,
+.dark-theme .sidebar {
+  background: #23272a !important;
+  color: #e5e7eb !important;
+  border-color: #23272a !important;
+}
+.dark-theme .text-primary,
+.dark-theme h1,
+.dark-theme h2,
+.dark-theme h3,
+.dark-theme h4,
+.dark-theme h5,
+.dark-theme h6 {
+  color: #60a5fa !important;
+}
+.dark-theme .btn,
+.dark-theme .btn-primary,
+.dark-theme .btn-outline-primary,
+.dark-theme .btn-secondary,
+.dark-theme .btn-info,
+.dark-theme .btn-danger {
+  border-radius: 16px;
+  color: #e5e7eb;
+  background: #374151;
+  border-color: #374151;
+}
+.dark-theme .btn-outline-primary {
+  background: transparent;
+  color: #60a5fa;
+  border-color: #60a5fa;
+}
+.dark-theme .btn-danger {
+  background: #ef4444;
+  border-color: #ef4444;
+}
+.dark-theme .btn-info {
+  background: #2563eb;
+  border-color: #2563eb;
+}
+.dark-theme .btn-secondary {
+  background: #64748b;
+  border-color: #64748b;
+}
+.dark-theme .form-control,
+.dark-theme textarea,
+.dark-theme input {
+  background: #23272a !important;
+  color: #e5e7eb !important;
+  border-color: #374151 !important;
+}
+.dark-theme .card {
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+}
+.dark-theme .app-footer {
+  color: #888 !important;
+}
+.dark-theme .text-muted {
+  color: #b0b3b8 !important;
+}
 /* Favorite star button styles */
 .favorite-star-btn {
   background: none;

@@ -19,6 +19,10 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authError, setAuthError] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
+  const [darkMode, setDarkMode] = useState(() => {
+    // Persist theme in localStorage
+    return localStorage.getItem('darkMode') === 'true';
+  });
   const dispatch = useDispatch();
 
   const handleEdit = (recipe) => {
@@ -106,10 +110,29 @@ function App() {
   };
 
   return (
-    <div className="app-container container py-4">
+    <div className={`app-container container py-4${darkMode ? ' dark-theme' : ''}`}> 
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="text-primary fw-bold">Recipe Tracker</h1>
-        <Button color="danger" onClick={handleLogout}>Logout</Button>
+        <h1 className="text-primary fw-bold mb-0">Recipe Tracker</h1>
+        <div className="d-flex align-items-center gap-2">
+          <Button
+            color={darkMode ? 'light' : 'dark'}
+            outline
+            size="sm"
+            className="me-2"
+            style={{ minWidth: 40 }}
+            onClick={() => {
+              setDarkMode(d => {
+                localStorage.setItem('darkMode', !d);
+                return !d;
+              });
+            }}
+            aria-label="Toggle dark mode"
+            title="Toggle dark mode"
+          >
+            {darkMode ? '🌙' : '☀️'}
+          </Button>
+          <Button color="danger" onClick={handleLogout}>Logout</Button>
+        </div>
       </div>
       <div className="row g-3 flex-lg-nowrap">
         {/* Sidebar: Recipe List */}
