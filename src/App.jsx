@@ -122,7 +122,7 @@ function App() {
         show={showRecipeModal}
         handleClose={handleCloseModal}
         handleSave={handleSave}
-        editingRecipe={editingRecipe}
+        initialData={editingRecipe}
         onSave={handleSave}
       />
       <footer className="app-footer mt-5 text-center text-muted small">
