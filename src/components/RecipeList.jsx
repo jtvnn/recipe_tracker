@@ -92,22 +92,24 @@ export default function RecipeList({ onEdit }) {
                   ? recipe.ingredients.slice(0, 60) + '...'
                   : recipe.ingredients || ''}
               </div>
-              <div className="d-flex flex-wrap gap-2 mt-2 ms-auto">
-                <Button color="secondary" size="sm" className="me-2" onClick={() => onEdit(recipe)}>
-                  Edit
-                </Button>
-                <Button
-                  color="info"
-                  size="sm"
-                  className="me-2"
-                  onClick={() => handleShare(recipe)}
-                >
-                  <span role="img" aria-label="Share" style={{ fontSize: '1.1em', marginRight: '0.4em' }}>📤</span>
-                  Share
-                </Button>
-                <Button color="danger" size="sm" onClick={() => dispatch(deleteRecipe(recipe.id))}>
-                  Delete
-                </Button>
+              <div className="d-flex flex-column justify-content-end align-items-stretch mt-3" style={{ minHeight: '48px' }}>
+                <div className="d-flex gap-2 w-100">
+                  <Button color="secondary" size="sm" className="flex-fill" onClick={() => onEdit(recipe)}>
+                    Edit
+                  </Button>
+                  <Button
+                    color="info"
+                    size="sm"
+                    className="flex-fill"
+                    onClick={() => handleShare(recipe)}
+                  >
+                    <span role="img" aria-label="Share" style={{ fontSize: '1.1em', marginRight: '0.4em' }}>📤</span>
+                    Share
+                  </Button>
+                  <Button color="danger" size="sm" className="flex-fill" onClick={() => dispatch(deleteRecipe(recipe.id))}>
+                    Delete
+                  </Button>
+                </div>
               </div>
             </div>
           </ListGroupItem>
