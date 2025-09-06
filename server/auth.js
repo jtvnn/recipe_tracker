@@ -4,10 +4,13 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { promises as fs } from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
 
 const router = express.Router();
 const JWT_SECRET = 'your_jwt_secret'; // Change to env var in production
-const USERS_FILE = path.resolve(process.cwd(), 'server', 'users.json');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const USERS_FILE = path.join(__dirname, 'users.json');
 
 async function readUsers() {
   try {
