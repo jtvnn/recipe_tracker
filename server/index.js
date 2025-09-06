@@ -1,3 +1,4 @@
+
 // ...existing code (keep only one set of imports, app, PORT, userRecipes, and favorite route)...
 import express from 'express';
 import cors from 'cors';
@@ -67,7 +68,20 @@ app.delete('/recipes/:id', authMiddleware, (req, res) => {
   res.status(204).end();
 });
 
-
+// ...existing code...
+// Toggle favorite status for a recipe (must be after app and userRecipes are defined)
+app.patch('/recipes/:id/favorite', authMiddleware, (req, res) => {
+  const email = req.user.email;
+  const id = Number(req.params.id);
+  const userList = userRecipes[email] || [];
+  const index = userList.findIndex(r => r.id === id);
+  if (index !== -1) {
+    userList[index].favorite = !userList[index].favorite;
+    res.json({ id, favorite: userList[index].favorite });
+  } else {
+    res.status(404).json({ error: 'Recipe not found' });
+  }
+});
 
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);

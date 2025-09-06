@@ -1,11 +1,10 @@
-// ...existing code...
+
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchRecipes, addRecipeAPI, editRecipeAPI, deleteRecipeAPI, toggleFavoriteAPI } from './recipesAPI';
 
 export const toggleFavorite = createAsyncThunk('recipes/toggleFavorite', async (id) => {
   return await toggleFavoriteAPI(id);
 });
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// ...existing code...
 
 export const getRecipes = createAsyncThunk('recipes/getRecipes', async () => {
   return await fetchRecipes();
