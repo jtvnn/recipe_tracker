@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import RecipeList from './components/RecipeList';
 import RecipeForm from './components/RecipeForm';
+import MealPlanner from './components/MealPlanner';
 import AuthForm from './components/AuthForm';
 import SpoonacularSearch from './components/SpoonacularSearch';
 import { Button } from 'reactstrap';
@@ -88,8 +89,9 @@ function App() {
             <RecipeList onEdit={handleEdit} />
           </section>
         </aside>
-        {/* Main content: Form and Search */}
+        {/* Main content: Meal Planner, Form and Search */}
         <div className="col-12 col-lg-8">
+          <MealPlanner />
           <SpoonacularSearch onImport={handleImport} />
           <RecipeForm editingRecipe={editingRecipe} onSave={handleSave} />
         </div>
