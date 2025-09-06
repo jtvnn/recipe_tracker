@@ -24,6 +24,11 @@ app.post('/upload', authMiddleware, upload.single('image'), (req, res) => {
   // Return the relative path to the uploaded file
   res.json({ imageUrl: `/uploads/${req.file.filename}` });
 });
+// Add /api/upload for production compatibility
+app.post('/api/upload', authMiddleware, upload.single('image'), (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
+  res.json({ imageUrl: `/uploads/${req.file.filename}` });
+});
 const PORT = 4000;
 
 
