@@ -19,10 +19,9 @@ function RecipeDraggable({ recipe }) {
   return (
     <div
       ref={drag}
-      className="border rounded p-2 mb-2 bg-white shadow-sm"
-      style={{ opacity: isDragging ? 0.5 : 1, cursor: 'grab' }}
+      className={`border rounded-lg p-2 mb-2 bg-white dark:bg-gray-800 shadow-sm font-medium text-gray-800 dark:text-gray-100 cursor-grab transition-opacity ${isDragging ? 'opacity-50' : 'opacity-100'}`}
     >
-      <strong>{recipe.name}</strong>
+      <span>{recipe.name}</span>
     </div>
   );
 }
@@ -42,26 +41,26 @@ function DayDropZone({ day, assignedRecipes, onDrop, onRemove, recipes }) {
   return (
     <div
       ref={drop}
-      className={`border rounded p-2 mb-2 bg-light ${isOver && canDrop ? 'border-primary bg-info bg-opacity-25' : ''}`}
-      style={{ minHeight: 60 }}
+      className={`border rounded-lg p-3 mb-2 min-h-[60px] bg-gray-50 dark:bg-gray-800 transition-colors ${isOver && canDrop ? 'border-blue-500 bg-blue-100 dark:bg-blue-900' : 'border-gray-200 dark:border-gray-700'}`}
     >
-      <strong>{day}</strong>
+      <span className="font-semibold text-gray-700 dark:text-gray-100">{day}</span>
       <div className="mt-2">
         {assigned.length > 0 ? (
           assigned.map((rec, idx) => (
-            <span key={rec.id} className="badge bg-success me-1 mb-1 d-inline-flex align-items-center">
+            <span key={rec.id} className="inline-flex items-center bg-green-100 dark:bg-green-700 text-green-800 dark:text-green-100 rounded px-2 py-1 text-xs font-medium mr-1 mb-1">
               {rec.name}
               <button
                 type="button"
-                className="btn-close btn-close-white btn-sm ms-2"
+                className="ml-2 text-xs text-green-900 dark:text-green-100 hover:text-red-500 dark:hover:text-red-400 focus:outline-none"
                 aria-label="Remove"
-                style={{ filter: 'invert(1)', opacity: 0.7, fontSize: '0.7em' }}
                 onClick={() => onRemove(day, rec.id)}
-              />
+              >
+                ×
+              </button>
             </span>
           ))
         ) : (
-          <span className="text-muted small">Drop a recipe here</span>
+          <span className="text-gray-400 text-xs">Drop a recipe here</span>
         )}
       </div>
     </div>
@@ -117,33 +116,32 @@ export default function MealPlannerDnD() {
 
   // Wait for both recipes and meal plan to load
   if (recipesStatus !== 'succeeded' || mealPlanStatus === 'loading') {
-    return <div className="text-center my-4">Loading meal planner...</div>;
+    return <div className="text-center my-4 text-gray-500 dark:text-gray-300">Loading meal planner...</div>;
   }
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="meal-planner card p-3 mb-4">
-        <h3 className="mb-3">Meal Planner (Drag & Drop)</h3>
-        <div className="row g-2">
-          <div className="col-12 col-md-4">
-            <div className="bg-light p-2 rounded mb-3">
-              <strong>Recipes</strong>
-              {recipes.length === 0 && <div className="text-muted small">No recipes</div>}
+      <div className="meal-planner bg-white dark:bg-gray-900 rounded-2xl shadow-lg p-6 mb-8">
+        <h3 className="mb-5 text-xl font-bold text-gray-800 dark:text-gray-100">Meal Planner <span className="font-normal text-base">(Drag & Drop)</span></h3>
+        <div className="flex flex-col md:flex-row gap-4">
+          <div className="md:w-1/3">
+            <div className="bg-gray-50 dark:bg-gray-800 p-3 rounded-lg mb-3 border border-gray-200 dark:border-gray-700">
+              <span className="font-semibold text-gray-700 dark:text-gray-100">Recipes</span>
+              {recipes.length === 0 && <div className="text-gray-400 text-xs mt-2">No recipes</div>}
               {recipes.map(r => <RecipeDraggable key={r.id} recipe={r} />)}
             </div>
           </div>
-          <div className="col-12 col-md-8">
-            <div className="row g-2">
+          <div className="md:w-2/3">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               {daysOfWeek.map(day => (
-                <div className="col-12 col-lg-6" key={day}>
-                  <DayDropZone
-                    day={day}
-                    assignedRecipes={filteredPlan[day]}
-                    onDrop={handleDrop}
-                    onRemove={handleRemove}
-                    recipes={recipes}
-                  />
-                </div>
+                <DayDropZone
+                  key={day}
+                  day={day}
+                  assignedRecipes={filteredPlan[day]}
+                  onDrop={handleDrop}
+                  onRemove={handleRemove}
+                  recipes={recipes}
+                />
               ))}
             </div>
           </div>
