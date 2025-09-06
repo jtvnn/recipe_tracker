@@ -46,8 +46,11 @@ const RecipeModal = ({ show, handleClose, handleSave, initialData }) => {
     setUploading(true);
     const formData = new FormData();
     formData.append('image', imageFile);
+    // Use /api/upload in production, /upload in dev/local
+    const isProd = window.location.hostname.includes('vercel.app') || window.location.hostname.includes('render.com');
+    const uploadUrl = isProd ? '/api/upload' : '/upload';
     try {
-  const res = await fetch('/upload', {
+      const res = await fetch(uploadUrl, {
         method: 'POST',
         body: formData,
       });
