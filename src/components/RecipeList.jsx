@@ -23,7 +23,9 @@ export default function RecipeList({ onEdit }) {
   if (status === 'failed') {
     return <div className="text-danger my-4">Error: {error}</div>;
   }
-  const filteredRecipes = showFavorites ? recipes.filter(r => r.favorite) : recipes;
+  // Ensure all recipes have a boolean favorite property
+  const normalizedRecipes = recipes.map(r => ({ ...r, favorite: !!r.favorite }));
+  const filteredRecipes = showFavorites ? normalizedRecipes.filter(r => r.favorite) : normalizedRecipes;
   return (
     <div>
       <div className="d-flex justify-content-between align-items-center mb-3">
@@ -43,7 +45,7 @@ export default function RecipeList({ onEdit }) {
                 className="btn btn-link p-0 me-2"
                 title={recipe.favorite ? 'Unfavorite' : 'Favorite'}
                 onClick={() => dispatch(toggleFavorite(recipe.id))}
-                style={{ fontSize: '1.3em', color: recipe.favorite ? '#ffc107' : '#bbb' }}
+                style={{ fontSize: '1.3em', color: recipe.favorite ? '#ffc107' : '#bbb', transition: 'color 0.2s' }}
                 aria-label={recipe.favorite ? 'Unfavorite' : 'Favorite'}
               >
                 {recipe.favorite ? '★' : '☆'}
