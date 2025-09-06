@@ -25,7 +25,7 @@ function RecipeDraggable({ recipe }) {
   );
 }
 
-function DayDropZone({ day, assignedRecipe, onDrop, recipes }) {
+function DayDropZone({ day, assignedRecipes, onDrop, onRemove, recipes }) {
   const [{ isOver, canDrop }, drop] = useDrop(() => ({
     accept: 'RECIPE',
     drop: (item) => onDrop(day, item.id),
@@ -35,7 +35,7 @@ function DayDropZone({ day, assignedRecipe, onDrop, recipes }) {
     }),
   }), [day, onDrop]);
 
-  const assigned = recipes.find(r => r.id == assignedRecipe);
+  const assigned = (assignedRecipes || []).map(id => recipes.find(r => r.id == id)).filter(Boolean);
 
   return (
     <div
@@ -45,8 +45,19 @@ function DayDropZone({ day, assignedRecipe, onDrop, recipes }) {
     >
       <strong>{day}</strong>
       <div className="mt-2">
-        {assigned ? (
-          <span className="badge bg-success">{assigned.name}</span>
+        {assigned.length > 0 ? (
+          assigned.map((rec, idx) => (
+            <span key={rec.id} className="badge bg-success me-1 mb-1 d-inline-flex align-items-center">
+              {rec.name}
+              <button
+                type="button"
+                className="btn-close btn-close-white btn-sm ms-2"
+                aria-label="Remove"
+                style={{ filter: 'invert(1)', opacity: 0.7, fontSize: '0.7em' }}
+                onClick={() => onRemove(day, rec.id)}
+              />
+            </span>
+          ))
         ) : (
           <span className="text-muted small">Drop a recipe here</span>
         )}
@@ -57,10 +68,22 @@ function DayDropZone({ day, assignedRecipe, onDrop, recipes }) {
 
 export default function MealPlannerDnD() {
   const recipes = useSelector(state => state.recipes.recipes);
+  // plan: { [day]: [recipeId, ...] }
   const [plan, setPlan] = useState({});
 
   const handleDrop = (day, recipeId) => {
-    setPlan(prev => ({ ...prev, [day]: recipeId }));
+    setPlan(prev => {
+      const prevList = prev[day] || [];
+      if (prevList.includes(recipeId)) return prev; // Prevent duplicates
+      return { ...prev, [day]: [...prevList, recipeId] };
+    });
+  };
+
+  const handleRemove = (day, recipeId) => {
+    setPlan(prev => {
+      const prevList = prev[day] || [];
+      return { ...prev, [day]: prevList.filter(id => id !== recipeId) };
+    });
   };
 
   return (
@@ -81,8 +104,9 @@ export default function MealPlannerDnD() {
                 <div className="col-12 col-lg-6" key={day}>
                   <DayDropZone
                     day={day}
-                    assignedRecipe={plan[day]}
+                    assignedRecipes={plan[day]}
                     onDrop={handleDrop}
+                    onRemove={handleRemove}
                     recipes={recipes}
                   />
                 </div>
