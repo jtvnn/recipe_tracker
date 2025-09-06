@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getMealPlan, setMealPlan } from '../redux/mealPlanSlice';
+import { getRecipes } from '../redux/recipesSlice';
 import { DndProvider, useDrag, useDrop } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
@@ -69,18 +70,17 @@ function DayDropZone({ day, assignedRecipes, onDrop, onRemove, recipes }) {
 
 export default function MealPlannerDnD() {
   const recipes = useSelector(state => state.recipes.recipes);
+  const recipesStatus = useSelector(state => state.recipes.status);
   const reduxPlan = useSelector(state => state.mealPlan.plan);
+  const mealPlanStatus = useSelector(state => state.mealPlan.status);
   const dispatch = useDispatch();
-  // plan: { [day]: [recipeId, ...] }
   const [plan, setPlan] = useState({});
-  // Load plan from localStorage and backend on mount
+
+  // Load recipes and meal plan on mount
   useEffect(() => {
-    const local = localStorage.getItem('mealPlan');
-    if (local) {
-      setPlan(JSON.parse(local));
-    }
+    if (recipesStatus === 'idle') dispatch(getRecipes());
     dispatch(getMealPlan());
-  }, [dispatch]);
+  }, [dispatch, recipesStatus]);
 
   // When reduxPlan changes (from backend), update local state and localStorage
   useEffect(() => {
@@ -89,6 +89,12 @@ export default function MealPlannerDnD() {
       localStorage.setItem('mealPlan', JSON.stringify(reduxPlan));
     }
   }, [reduxPlan]);
+
+  // Only show assignments for recipes that exist
+  const filteredPlan = {};
+  for (const day in plan) {
+    filteredPlan[day] = (plan[day] || []).filter(id => recipes.some(r => r.id === id));
+  }
 
   const persistPlan = (newPlan) => {
     setPlan(newPlan);
@@ -109,6 +115,11 @@ export default function MealPlannerDnD() {
     persistPlan(newPlan);
   };
 
+  // Wait for both recipes and meal plan to load
+  if (recipesStatus !== 'succeeded' || mealPlanStatus === 'loading') {
+    return <div className="text-center my-4">Loading meal planner...</div>;
+  }
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div className="meal-planner card p-3 mb-4">
@@ -127,7 +138,7 @@ export default function MealPlannerDnD() {
                 <div className="col-12 col-lg-6" key={day}>
                   <DayDropZone
                     day={day}
-                    assignedRecipes={plan[day]}
+                    assignedRecipes={filteredPlan[day]}
                     onDrop={handleDrop}
                     onRemove={handleRemove}
                     recipes={recipes}
