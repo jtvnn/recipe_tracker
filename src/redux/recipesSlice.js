@@ -1,3 +1,15 @@
+import { toggleFavoriteAPI } from './recipesAPI';
+
+export const toggleFavorite = createAsyncThunk('recipes/toggleFavorite', async (id) => {
+  return await toggleFavoriteAPI(id);
+});
+      .addCase(toggleFavorite.fulfilled, (state, action) => {
+        const { id, favorite } = action.payload;
+        const index = state.recipes.findIndex(r => r.id === id);
+        if (index !== -1) {
+          state.recipes[index].favorite = favorite;
+        }
+      })
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { fetchRecipes, addRecipeAPI, editRecipeAPI, deleteRecipeAPI } from './recipesAPI';
 
@@ -58,6 +70,13 @@ const recipesSlice = createSlice({
       })
       .addCase(deleteRecipe.fulfilled, (state, action) => {
         state.recipes = state.recipes.filter(r => r.id !== action.payload);
+      })
+      .addCase(toggleFavorite.fulfilled, (state, action) => {
+        const { id, favorite } = action.payload;
+        const index = state.recipes.findIndex(r => r.id === id);
+        if (index !== -1) {
+          state.recipes[index].favorite = favorite;
+        }
       });
   },
 });

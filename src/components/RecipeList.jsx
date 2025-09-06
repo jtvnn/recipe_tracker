@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getRecipes, deleteRecipe } from '../redux/recipesSlice';
+import { getRecipes, deleteRecipe, toggleFavorite } from '../redux/recipesSlice';
 import { ListGroup, ListGroupItem, Button } from 'reactstrap';
 
 export default function RecipeList({ onEdit }) {
@@ -27,9 +27,18 @@ export default function RecipeList({ onEdit }) {
       <ListGroup>
         {recipes.map(recipe => (
           <ListGroupItem key={recipe.id} className="d-flex justify-content-between align-items-center">
-            <div className="flex-grow-1">
+            <div className="flex-grow-1 d-flex align-items-center">
+              <button
+                className="btn btn-link p-0 me-2"
+                title={recipe.favorite ? 'Unfavorite' : 'Favorite'}
+                onClick={() => dispatch(toggleFavorite(recipe.id))}
+                style={{ fontSize: '1.3em', color: recipe.favorite ? '#ffc107' : '#bbb' }}
+                aria-label={recipe.favorite ? 'Unfavorite' : 'Favorite'}
+              >
+                {recipe.favorite ? '★' : '☆'}
+              </button>
               <span className="fw-bold">{recipe.name}</span>
-              <div className="text-muted small">
+              <div className="text-muted small ms-2">
                 {recipe.ingredients
                   ? recipe.ingredients.length > 60
                     ? recipe.ingredients.slice(0, 60) + '...'

@@ -1,3 +1,11 @@
+// Toggle favorite status for a recipe
+export async function toggleFavoriteAPI(id) {
+  const res = await fetch(`${API_URL}/${id}/favorite`, {
+    method: 'PATCH',
+    headers: { ...getAuthHeader() },
+  });
+  return res.json();
+}
 // recipesAPI.js
 const API_URL = 'https://recipe-tracker-1-lqbn.onrender.com/recipes';
 

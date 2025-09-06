@@ -1,3 +1,16 @@
+// Toggle favorite status for a recipe
+app.patch('/recipes/:id/favorite', authMiddleware, (req, res) => {
+  const email = req.user.email;
+  const id = Number(req.params.id);
+  const userList = userRecipes[email] || [];
+  const index = userList.findIndex(r => r.id === id);
+  if (index !== -1) {
+    userList[index].favorite = !userList[index].favorite;
+    res.json({ id, favorite: userList[index].favorite });
+  } else {
+    res.status(404).json({ error: 'Recipe not found' });
+  }
+});
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
