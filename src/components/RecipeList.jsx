@@ -63,7 +63,7 @@ export default function RecipeList({ onEdit }) {
       </div>
       <ListGroup>
         {filteredRecipes.map(recipe => (
-          <ListGroupItem key={recipe.id} className="d-flex justify-content-between align-items-center">
+            <ListGroupItem key={recipe.id} className="flex-column align-items-start">
             <div className="flex-grow-1 d-flex align-items-center">
               <button
                 className="favorite-star-btn me-2"
@@ -92,7 +92,7 @@ export default function RecipeList({ onEdit }) {
                   : ''}
               </div>
             </div>
-            <div>
+              <div className="d-flex flex-wrap gap-2 mt-2">
               <Button color="secondary" size="sm" className="me-2" onClick={() => onEdit(recipe)}>
                 Edit
               </Button>
