@@ -4,6 +4,30 @@ import { getRecipes, deleteRecipe, toggleFavorite } from '../redux/recipesSlice'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap';
 
 
+function getShareUrl(recipeId) {
+  // Use current location as base, fallback to window.location if available
+  const base = typeof window !== 'undefined' ? window.location.origin : '';
+  return `${base}/share/${recipeId}`;
+}
+
+async function handleShare(recipe) {
+  const url = getShareUrl(recipe.id);
+  const text = `Check out this recipe: ${recipe.name}\n${url}`;
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: recipe.name, text, url });
+      return;
+    } catch {}
+  }
+  // Fallback: copy to clipboard
+  try {
+    await navigator.clipboard.writeText(url);
+    alert('Link copied to clipboard!');
+  } catch {
+    window.prompt('Copy this link:', url);
+  }
+}
+
 export default function RecipeList({ onEdit }) {
   const recipes = useSelector(state => state.recipes.recipes);
   const status = useSelector(state => state.recipes.status);
@@ -71,6 +95,9 @@ export default function RecipeList({ onEdit }) {
             <div>
               <Button color="secondary" size="sm" className="me-2" onClick={() => onEdit(recipe)}>
                 Edit
+              </Button>
+              <Button color="info" size="sm" className="me-2" onClick={() => handleShare(recipe)}>
+                Share
               </Button>
               <Button color="danger" size="sm" onClick={() => dispatch(deleteRecipe(recipe.id))}>
                 Delete
