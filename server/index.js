@@ -1,3 +1,4 @@
+// ...existing code...
 // Toggle favorite status for a recipe
 app.patch('/recipes/:id/favorite', authMiddleware, (req, res) => {
   const email = req.user.email;

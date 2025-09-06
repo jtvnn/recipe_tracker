@@ -1,13 +1,15 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { getRecipes, deleteRecipe, toggleFavorite } from '../redux/recipesSlice';
 import { ListGroup, ListGroupItem, Button } from 'reactstrap';
+
 
 export default function RecipeList({ onEdit }) {
   const recipes = useSelector(state => state.recipes.recipes);
   const status = useSelector(state => state.recipes.status);
   const error = useSelector(state => state.recipes.error);
   const dispatch = useDispatch();
+  const [showFavorites, setShowFavorites] = useState(false);
 
   useEffect(() => {
     if (status === 'idle') {
@@ -21,11 +23,20 @@ export default function RecipeList({ onEdit }) {
   if (status === 'failed') {
     return <div className="text-danger my-4">Error: {error}</div>;
   }
+  const filteredRecipes = showFavorites ? recipes.filter(r => r.favorite) : recipes;
   return (
     <div>
-      <h2 className="mb-3">Recipes</h2>
+      <div className="d-flex justify-content-between align-items-center mb-3">
+        <h2 className="mb-0">Recipes</h2>
+        <button
+          className={`btn btn-sm ${showFavorites ? 'btn-warning' : 'btn-outline-secondary'}`}
+          onClick={() => setShowFavorites(f => !f)}
+        >
+          {showFavorites ? 'Show All' : 'Show Favorites'}
+        </button>
+      </div>
       <ListGroup>
-        {recipes.map(recipe => (
+        {filteredRecipes.map(recipe => (
           <ListGroupItem key={recipe.id} className="d-flex justify-content-between align-items-center">
             <div className="flex-grow-1 d-flex align-items-center">
               <button

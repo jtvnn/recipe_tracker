@@ -1,17 +1,11 @@
-import { toggleFavoriteAPI } from './recipesAPI';
+// ...existing code...
+import { fetchRecipes, addRecipeAPI, editRecipeAPI, deleteRecipeAPI, toggleFavoriteAPI } from './recipesAPI';
 
 export const toggleFavorite = createAsyncThunk('recipes/toggleFavorite', async (id) => {
   return await toggleFavoriteAPI(id);
 });
-      .addCase(toggleFavorite.fulfilled, (state, action) => {
-        const { id, favorite } = action.payload;
-        const index = state.recipes.findIndex(r => r.id === id);
-        if (index !== -1) {
-          state.recipes[index].favorite = favorite;
-        }
-      })
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchRecipes, addRecipeAPI, editRecipeAPI, deleteRecipeAPI } from './recipesAPI';
+// ...existing code...
 
 export const getRecipes = createAsyncThunk('recipes/getRecipes', async () => {
   return await fetchRecipes();
