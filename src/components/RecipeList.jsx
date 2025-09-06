@@ -96,8 +96,8 @@ export default function RecipeList({ onEdit }) {
               <Button color="secondary" size="sm" className="me-2" onClick={() => onEdit(recipe)}>
                 Edit
               </Button>
-              <Button color="info" size="sm" className="me-2" onClick={() => handleShare(recipe)}>
-                Share
+              <Button color="info" size="lg" className="me-2 fw-bold px-4 py-2" style={{ fontSize: '1.2em' }} onClick={() => handleShare(recipe)}>
+                📤 Share
               </Button>
               <Button color="danger" size="sm" onClick={() => dispatch(deleteRecipe(recipe.id))}>
                 Delete
