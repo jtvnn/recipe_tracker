@@ -35,7 +35,9 @@ const PORT = 4000;
 const allowedOrigins = [
   'https://recipe-tracker-eosin.vercel.app',
   'http://localhost:5173',
-  'http://127.0.0.1:5173'
+  'http://127.0.0.1:5173',
+  'https://recipe-tracker-1-lqbn.onrender.com',
+  'https://recipe-tracker-4xjvl12d-jtvnns-projects.vercel.app'
 ];
 app.use(cors({
   origin: function(origin, callback) {
