@@ -3,6 +3,8 @@
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+import { promises as fs } from 'fs';
+import { fileURLToPath } from 'url';
 
 import authRouter from './auth.js';
 import authMiddleware from './authMiddleware.js';
@@ -35,17 +37,42 @@ app.use('/auth', authRouter);
 let userRecipes = {};
 // Store meal plans per user: { [email]: { [day]: [recipeId, ...] } }
 let userMealPlans = {};
+
+// File-based persistence for meal plans
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const MEALPLANS_FILE = path.join(__dirname, 'mealplans.json');
+
+async function readMealPlans() {
+  try {
+    const data = await fs.readFile(MEALPLANS_FILE, 'utf-8');
+    return JSON.parse(data);
+  } catch {
+    return {};
+  }
+}
+
+async function writeMealPlans(plans) {
+  await fs.writeFile(MEALPLANS_FILE, JSON.stringify(plans, null, 2));
+}
+
+// Load meal plans on server start
+readMealPlans().then(plans => { userMealPlans = plans; });
 // Get meal plan for user
-app.get('/mealplan', authMiddleware, (req, res) => {
+app.get('/mealplan', authMiddleware, async (req, res) => {
   const email = req.user.email;
+  // Always read latest from disk in case of multi-process
+  const plans = await readMealPlans();
+  userMealPlans = plans;
   res.json(userMealPlans[email] || {});
 });
 
 // Save meal plan for user
-app.post('/mealplan', authMiddleware, (req, res) => {
+app.post('/mealplan', authMiddleware, async (req, res) => {
   const email = req.user.email;
   const { plan } = req.body;
   userMealPlans[email] = plan;
+  await writeMealPlans(userMealPlans);
   res.json({ success: true });
 });
 
