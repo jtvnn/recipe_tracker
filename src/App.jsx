@@ -56,7 +56,11 @@ function App() {
     localStorage.removeItem('token');
     setIsAuthenticated(false);
     setEditingRecipe(null);
+    setAuthError(null);
+    setShowRegister(false);
     dispatch(clearRecipes()); // Clear recipes on logout
+    // Optionally force a reload to reset all state
+    // window.location.reload();
   };
 
   // Import handler: add a Spoonacular recipe to user's list
