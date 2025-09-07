@@ -68,7 +68,7 @@ function App() {
 
   if (!isAuthenticated) {
     return (
-      <div className={`app-container container-xl py-4${darkTheme ? ' dark-theme' : ''}`}>
+  <div className={`app-container container-xxl py-4${darkTheme ? ' dark-theme' : ''}`}>
         <div className="d-flex justify-content-between align-items-center mb-4">
           <h1 className="mb-0 text-primary fw-bold">Recipe Tracker</h1>
           <Button color={darkTheme ? 'secondary' : 'dark'} outline onClick={() => setDarkTheme(t => !t)}>
@@ -112,7 +112,7 @@ function App() {
   };
 
   return (
-    <div className={`app-container container-xl py-4${darkTheme ? ' dark-theme' : ''}`}>
+  <div className={`app-container container-xxl py-4${darkTheme ? ' dark-theme' : ''}`}>
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="text-primary fw-bold mb-0">Recipe Tracker</h1>
         <div className="d-flex gap-2">
