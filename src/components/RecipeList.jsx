@@ -51,70 +51,73 @@ export default function RecipeList({ onEdit }) {
   // Ensure all recipes have a boolean favorite property
   const normalizedRecipes = recipes.map(r => ({ ...r, favorite: !!r.favorite }));
   const filteredRecipes = showFavorites ? normalizedRecipes.filter(r => r.favorite) : normalizedRecipes;
-  return (
-    <div>
-      <div className="d-flex justify-content-between align-items-center mb-3">
-        <h2 className="mb-0">Recipes</h2>
-        <button
-          className={`btn btn-sm ${showFavorites ? 'btn-warning' : 'btn-outline-secondary'}`}
-          onClick={() => setShowFavorites(f => !f)}
-        >
-          {showFavorites ? 'Show All' : 'Show Favorites'}
-        </button>
+    return (
+      <div className="container my-4">
+        <div className="card shadow-sm">
+          <div className="card-header d-flex justify-content-between align-items-center bg-primary text-white">
+            <h2 className="mb-0" style={{ fontSize: '1.5rem' }}>My Recipes</h2>
+            <button
+              className={`btn btn-sm ${showFavorites ? 'btn-warning' : 'btn-outline-light'}`}
+              onClick={() => setShowFavorites(f => !f)}
+            >
+              {showFavorites ? 'Show All' : 'Show Favorites'}
+            </button>
+          </div>
+          <div className="card-body p-0">
+            <ListGroup flush>
+              {filteredRecipes.map(recipe => (
+                <ListGroupItem key={recipe.id} className="d-flex align-items-start gap-3">
+                  {recipe.imageUrl && (
+                    <Image
+                      src={recipe.imageUrl.startsWith('http') ? recipe.imageUrl : `/uploads/${recipe.imageUrl}`}
+                      alt={recipe.name}
+                      thumbnail
+                      style={{ width: 80, height: 80, objectFit: 'cover' }}
+                      className="me-2"
+                    />
+                  )}
+                  <div className="flex-grow-1 d-flex align-items-start">
+                    <span className="fw-bold me-2">{recipe.name}</span>
+                    <Button
+                      color={recipe.favorite ? 'warning' : 'outline-secondary'}
+                      size="sm"
+                      className="flex-fill d-flex justify-content-center align-items-center"
+                      style={{ fontWeight: 'bold', fontSize: '1em', height: '32px' }}
+                      onClick={() => dispatch(toggleFavorite(recipe.id))}
+                      aria-label={recipe.favorite ? 'Unfavorite' : 'Favorite'}
+                      title={recipe.favorite ? 'Unfavorite' : 'Favorite'}
+                    >
+                      {recipe.favorite ? '★' : '☆'}
+                    </Button>
+                    <div className="text-muted small ms-2 flex-grow-1">
+                      {recipe.ingredients && recipe.ingredients.length > 60
+                        ? recipe.ingredients.slice(0, 60) + '...'
+                        : recipe.ingredients || ''}
+                    </div>
+                    <div className="d-flex flex-column justify-content-end align-items-stretch mt-3" style={{ minHeight: '48px' }}>
+                      <div className="d-flex gap-2 w-100">
+                        <Button color="secondary" size="sm" style={{paddingTop: '2px', paddingBottom: '2px'}} onClick={() => onEdit(recipe)}>
+                          Edit
+                        </Button>
+                        <Button style={{paddingTop: '2px', paddingBottom: '2px'}} size="sm"
+                          color="info"
+                          className=""
+                          onClick={() => handleShare(recipe)}
+                        >
+                          <span role="img" aria-label="Share" style={{ fontSize: '1.1em', marginRight: '0.4em' }}>📤</span>
+                          Share
+                        </Button>
+                        <Button color="danger" size="sm" style={{paddingTop: '2px', paddingBottom: '2px'}} onClick={() => dispatch(deleteRecipe(recipe.id))}>
+                          Delete
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </ListGroupItem>
+              ))}
+            </ListGroup>
+          </div>
+        </div>
       </div>
-      <ListGroup>
-        {filteredRecipes.map(recipe => (
-          <ListGroupItem key={recipe.id} className="d-flex align-items-start gap-3">
-            {recipe.imageUrl && (
-              <Image
-                src={recipe.imageUrl.startsWith('http') ? recipe.imageUrl : `/uploads/${recipe.imageUrl}`}
-                alt={recipe.name}
-                thumbnail
-                style={{ width: 80, height: 80, objectFit: 'cover' }}
-                className="me-2"
-              />
-            )}
-            <div className="flex-grow-1 d-flex align-items-start">
-              <span className="fw-bold me-2">{recipe.name}</span>
-              <Button
-                color={recipe.favorite ? 'warning' : 'outline-secondary'}
-                size="sm"
-                className="flex-fill d-flex justify-content-center align-items-center"
-                style={{ fontWeight: 'bold', fontSize: '1em', height: '32px' }}
-                onClick={() => dispatch(toggleFavorite(recipe.id))}
-                aria-label={recipe.favorite ? 'Unfavorite' : 'Favorite'}
-                title={recipe.favorite ? 'Unfavorite' : 'Favorite'}
-              >
-                {recipe.favorite ? '★' : '☆'}
-              </Button>
-              <div className="text-muted small ms-2 flex-grow-1">
-                {recipe.ingredients && recipe.ingredients.length > 60
-                  ? recipe.ingredients.slice(0, 60) + '...'
-                  : recipe.ingredients || ''}
-              </div>
-              <div className="d-flex flex-column justify-content-end align-items-stretch mt-3" style={{ minHeight: '48px' }}>
-                <div className="d-flex gap-2 w-100">
-                  <Button color="secondary" size="sm" style={{paddingTop: '2px', paddingBottom: '2px'}} onClick={() => onEdit(recipe)}>
-                    Edit
-                  </Button>
-                  <Button style={{paddingTop: '2px', paddingBottom: '2px'}} size="sm"
-                    color="info"
-                    size="sm"
-                    className=""
-                    onClick={() => handleShare(recipe)}
-                  >
-                    <span role="img" aria-label="Share" style={{ fontSize: '1.1em', marginRight: '0.4em' }}>📤</span>
-                    Share
-                  </Button>
-                  <Button color="danger" size="sm" style={{paddingTop: '2px', paddingBottom: '2px'}} onClick={() => dispatch(deleteRecipe(recipe.id))}>
-                    Delete
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </ListGroupItem>
-        ))}
-      </ListGroup>
-    </div>
-  );
+    );
 }
