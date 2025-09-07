@@ -1,6 +1,10 @@
 
-// ...existing code (keep only one set of imports, app, PORT, userRecipes, and favorite route)...
+import cors from 'cors';
 import express from 'express';
+
+
+// ...existing code (keep only one set of imports, app, PORT, userRecipes, and favorite route)...
+
 import multer from 'multer';
 
 
@@ -15,7 +19,31 @@ const __dirname = path.dirname(__filename);
 
 import authRouter from './auth.js';
 import authMiddleware from './authMiddleware.js';
+
 const app = express();
+// Robust CORS config for local and deployed environments
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://127.0.0.1:5173',
+  'https://recipe-tracker-eosin.vercel.app',
+  'https://recipe-tracker-4xjvl12d-jtvnns-projects.vercel.app',
+  'https://recipe-tracker-1-lqbn.onrender.com'
+];
+app.use(cors({
+  origin: function(origin, callback) {
+    // Allow requests with no origin (like curl, mobile apps, etc.)
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  optionsSuccessStatus: 200
+}));
 
 // --- CORS config: must be first ---
 
