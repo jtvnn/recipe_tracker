@@ -94,19 +94,19 @@ export default function RecipeList({ onEdit }) {
               </div>
               <div className="d-flex flex-column justify-content-end align-items-stretch mt-3" style={{ minHeight: '48px' }}>
                 <div className="d-flex gap-2 w-100">
-                  <Button color="secondary" size="sm" className="flex-fill" onClick={() => onEdit(recipe)}>
+                  <Button color="secondary" size="sm" onClick={() => onEdit(recipe)}>
                     Edit
                   </Button>
                   <Button
                     color="info"
                     size="sm"
-                    className="flex-fill"
+                    className=""
                     onClick={() => handleShare(recipe)}
                   >
                     <span role="img" aria-label="Share" style={{ fontSize: '1.1em', marginRight: '0.4em' }}>📤</span>
                     Share
                   </Button>
-                  <Button color="danger" size="sm" className="flex-fill" onClick={() => dispatch(deleteRecipe(recipe.id))}>
+                  <Button color="danger" size="sm" onClick={() => dispatch(deleteRecipe(recipe.id))}>
                     Delete
                   </Button>
                 </div>
