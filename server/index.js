@@ -2,7 +2,7 @@
 // ...existing code (keep only one set of imports, app, PORT, userRecipes, and favorite route)...
 import express from 'express';
 import multer from 'multer';
-import cors from 'cors';
+
 
 import path from 'path';
 import { promises as fs } from 'fs';
@@ -18,27 +18,7 @@ import authMiddleware from './authMiddleware.js';
 const app = express();
 
 // --- CORS config: must be first ---
-const allowedOrigins = [
-  'https://recipe-tracker-eosin.vercel.app',
-  'http://localhost:5173',
-  'http://127.0.0.1:5173',
-  'https://recipe-tracker-1-lqbn.onrender.com',
-  'https://recipe-tracker-4xjvl12d-jtvnns-projects.vercel.app'
-];
-app.use(cors({
-  origin: function(origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  optionsSuccessStatus: 200
-}));
+
 // Catch-all OPTIONS for preflight
 
 // --- End CORS config ---
