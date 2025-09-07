@@ -48,7 +48,7 @@ const RecipeModal = ({ show, handleClose, handleSave, initialData }) => {
     formData.append('image', imageFile);
     // Use /api/upload in production, /upload in dev/local
     const isProd = window.location.hostname.includes('vercel.app') || window.location.hostname.includes('render.com');
-  const uploadUrl = isProd ? '/api/upload' : 'http://localhost:4000/upload';
+    const uploadUrl = isProd ? '/api/upload' : 'http://localhost:4000/upload';
     try {
       const token = localStorage.getItem('token');
       const res = await fetch(uploadUrl, {
@@ -61,6 +61,9 @@ const RecipeModal = ({ show, handleClose, handleSave, initialData }) => {
       });
       const data = await res.json();
       setUploading(false);
+      if (data.imageUrl) {
+        setForm(f => ({ ...f, imageUrl: data.imageUrl }));
+      }
       return data.imageUrl || '';
     } catch (err) {
       setUploading(false);
