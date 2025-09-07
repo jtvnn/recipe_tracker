@@ -12,6 +12,7 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.9.0",
     "bootstrap": "^5.3.8",
+    "bootswatch": "^5.3.7",
     "multer": "^2.0.2",
     "react": "^19.1.1",
     "react-bootstrap": "^2.10.10",

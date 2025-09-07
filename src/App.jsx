@@ -19,6 +19,7 @@ function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [authError, setAuthError] = useState(null);
   const [showRegister, setShowRegister] = useState(false);
+  const [darkTheme, setDarkTheme] = useState(false);
   const dispatch = useDispatch();
 
   const handleEdit = (recipe) => {
@@ -67,8 +68,13 @@ function App() {
 
   if (!isAuthenticated) {
     return (
-  <div className="app-container container-xl py-4">
-        <h1 className="mb-4 text-primary fw-bold">Recipe Tracker</h1>
+      <div className={`app-container container-xl py-4${darkTheme ? ' dark-theme' : ''}`}>
+        <div className="d-flex justify-content-between align-items-center mb-4">
+          <h1 className="mb-0 text-primary fw-bold">Recipe Tracker</h1>
+          <Button color={darkTheme ? 'secondary' : 'dark'} outline onClick={() => setDarkTheme(t => !t)}>
+            {darkTheme ? 'Light Mode' : 'Dark Mode'}
+          </Button>
+        </div>
         <AuthForm onAuth={handleAuth} error={authError} isRegister={showRegister} />
         <Button color="link" onClick={() => setShowRegister(r => !r)}>
           {showRegister ? 'Already have an account? Login' : "Don't have an account? Register"}
@@ -106,13 +112,17 @@ function App() {
   };
 
   return (
-  <div className="app-container container-xl py-4">
+    <div className={`app-container container-xl py-4${darkTheme ? ' dark-theme' : ''}`}>
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <h1 className="text-primary fw-bold">Recipe Tracker</h1>
-        <Button color="danger" onClick={handleLogout}>Logout</Button>
+        <h1 className="text-primary fw-bold mb-0">Recipe Tracker</h1>
+        <div className="d-flex gap-2">
+          <Button color={darkTheme ? 'secondary' : 'dark'} outline onClick={() => setDarkTheme(t => !t)}>
+            {darkTheme ? 'Light Mode' : 'Dark Mode'}
+          </Button>
+          <Button color="danger" onClick={handleLogout}>Logout</Button>
+        </div>
       </div>
       <div className="row g-3 flex-lg-nowrap">
-        {/* Sidebar: Recipe List */}
         <aside className="col-12 col-lg-4 mb-3 mb-lg-0">
           <section className="sidebar-section sidebar bg-white rounded shadow-sm p-3 h-100">
             <div className="d-flex justify-content-between align-items-center mb-2">
@@ -122,7 +132,6 @@ function App() {
             <RecipeList onEdit={handleEdit} />
           </section>
         </aside>
-        {/* Main content: Meal Planner, Form and Search */}
         <div className="col-12 col-lg-8">
           <MealPlannerDnD />
           <SpoonacularSearch onImport={handleImport} />
