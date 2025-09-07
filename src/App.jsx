@@ -126,14 +126,19 @@ function App() {
         <aside className="col-12 col-lg-4 mb-3 mb-lg-0">
           <section className="sidebar-section sidebar bg-white rounded shadow-sm p-3 h-100">
             <div className="d-flex justify-content-between align-items-center mb-2">
+              <span className="fw-bold">Meal Planner</span>
+            </div>
+            <MealPlannerDnD />
+          </section>
+        </aside>
+        <div className="col-12 col-lg-8">
+          <div className="bg-white rounded shadow-sm p-3 mb-3">
+            <div className="d-flex justify-content-between align-items-center mb-2">
               <span className="fw-bold">My Recipes</span>
               <Button color="primary" size="sm" onClick={handleAdd}>Add Recipe</Button>
             </div>
             <RecipeList onEdit={handleEdit} />
-          </section>
-        </aside>
-        <div className="col-12 col-lg-8">
-          <MealPlannerDnD />
+          </div>
           <SpoonacularSearch onImport={handleImport} />
         </div>
       </div>
