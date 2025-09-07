@@ -40,20 +40,7 @@ app.use(cors({
   optionsSuccessStatus: 200
 }));
 // Catch-all OPTIONS for preflight
-app.options(/^\//, cors({
-  origin: function(origin, callback) {
-    if (!origin) return callback(null, true);
-    if (allowedOrigins.includes(origin)) {
-      return callback(null, true);
-    } else {
-      return callback(new Error('Not allowed by CORS'));
-    }
-  },
-  credentials: true,
-  allowedHeaders: ['Content-Type', 'Authorization'],
-  methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  optionsSuccessStatus: 200
-}));
+
 // --- End CORS config ---
 
 const upload = multer({ dest: path.join(__dirname, 'uploads') });
