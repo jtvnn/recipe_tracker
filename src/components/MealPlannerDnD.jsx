@@ -133,9 +133,9 @@ export default function MealPlannerDnD() {
             </div>
           </div>
           <div className="col-12 col-md-8">
-            <div className="row g-2">
+            <div className="d-flex flex-column gap-2">
               {daysOfWeek.map(day => (
-                <div className="col-12 col-lg-6" key={day}>
+                <div className="w-100" key={day}>
                   <DayDropZone
                     day={day}
                     assignedRecipes={filteredPlan[day]}
