@@ -50,9 +50,14 @@ const RecipeModal = ({ show, handleClose, handleSave, initialData }) => {
     const isProd = window.location.hostname.includes('vercel.app') || window.location.hostname.includes('render.com');
   const uploadUrl = isProd ? '/api/upload' : 'http://localhost:4000/upload';
     try {
+      const token = localStorage.getItem('token');
       const res = await fetch(uploadUrl, {
         method: 'POST',
         body: formData,
+        headers: {
+          Authorization: token ? `Bearer ${token}` : undefined,
+        },
+        credentials: 'include',
       });
       const data = await res.json();
       setUploading(false);
