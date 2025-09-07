@@ -43,13 +43,17 @@ function DayDropZone({ day, assignedRecipes, onDrop, onRemove, recipes }) {
     <div
       ref={drop}
       className={`border rounded p-2 mb-2 bg-light ${isOver && canDrop ? 'border-primary bg-info bg-opacity-25' : ''}`}
-      style={{ minHeight: 60 }}
+      style={{ minHeight: 60, overflow: 'hidden' }}
     >
       <strong>{day}</strong>
-      <div className="mt-2">
+      <div className="mt-2 d-flex flex-wrap align-items-center" style={{gap: '0.25rem', maxWidth: '100%'}}>
         {assigned.length > 0 ? (
           assigned.map((rec, idx) => (
-            <span key={rec.id} className="badge bg-success me-1 mb-1 d-inline-flex align-items-center">
+            <span
+              key={rec.id}
+              className="badge bg-success mb-1 d-inline-flex align-items-center text-truncate"
+              style={{ maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+            >
               {rec.name}
               <button
                 type="button"
