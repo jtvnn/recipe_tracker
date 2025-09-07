@@ -57,12 +57,20 @@ app.use(express.json());
 app.use('/auth', authRouter);
 // Image upload endpoint
 app.post('/upload', authMiddleware, upload.single('image'), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-  res.json({ imageUrl: `/uploads/${req.file.filename}` });
+  if (!req.file) {
+    console.error('Image upload failed: No file uploaded');
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+  console.log('Image uploaded:', req.file.filename);
+  res.json({ imageUrl: req.file.filename });
 });
 app.post('/api/upload', authMiddleware, upload.single('image'), (req, res) => {
-  if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
-  res.json({ imageUrl: `/uploads/${req.file.filename}` });
+  if (!req.file) {
+    console.error('Image upload failed: No file uploaded');
+    return res.status(400).json({ error: 'No file uploaded' });
+  }
+  console.log('Image uploaded:', req.file.filename);
+  res.json({ imageUrl: req.file.filename });
 });
 const PORT = 4000;
 
