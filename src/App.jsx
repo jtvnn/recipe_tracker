@@ -67,7 +67,7 @@ function App() {
 
   if (!isAuthenticated) {
     return (
-      <div className="app-container container py-4">
+  <div className="app-container container-xl py-4">
         <h1 className="mb-4 text-primary fw-bold">Recipe Tracker</h1>
         <AuthForm onAuth={handleAuth} error={authError} isRegister={showRegister} />
         <Button color="link" onClick={() => setShowRegister(r => !r)}>
@@ -106,7 +106,7 @@ function App() {
   };
 
   return (
-    <div className="app-container container py-4">
+  <div className="app-container container-xl py-4">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <h1 className="text-primary fw-bold">Recipe Tracker</h1>
         <Button color="danger" onClick={handleLogout}>Logout</Button>
