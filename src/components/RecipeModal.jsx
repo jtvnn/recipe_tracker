@@ -125,9 +125,20 @@ const RecipeModal = ({ show, handleClose, handleSave, initialData }) => {
             {uploading && (
               <div className="mt-2"><Spinner animation="border" size="sm" /> Uploading...</div>
             )}
-            {previewUrl && (
+            {/* Show preview if uploading or new file, otherwise show actual uploaded image if available */}
+            {uploading && previewUrl && (
               <div className="mt-2">
                 <Image src={previewUrl} alt="Preview" thumbnail style={{ maxHeight: 200 }} />
+              </div>
+            )}
+            {!uploading && form.imageUrl && (
+              <div className="mt-2">
+                <Image
+                  src={form.imageUrl.startsWith('http') ? form.imageUrl : `/uploads/${form.imageUrl}`}
+                  alt="Recipe"
+                  thumbnail
+                  style={{ maxHeight: 200 }}
+                />
               </div>
             )}
           </Form.Group>
