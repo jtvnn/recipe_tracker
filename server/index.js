@@ -40,7 +40,7 @@ app.use(cors({
   optionsSuccessStatus: 200
 }));
 // Catch-all OPTIONS for preflight
-app.options('/', cors({
+app.options('*', cors({
   origin: function(origin, callback) {
     if (!origin) return callback(null, true);
     if (allowedOrigins.includes(origin)) {
