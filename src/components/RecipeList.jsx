@@ -30,6 +30,19 @@ async function handleShare(recipe) {
 }
 
 export default function RecipeList({ onEdit }) {
+  // Utility to strip HTML tags
+  function stripHtml(html) {
+    if (!html) return '';
+    return html.replace(/<[^>]+>/g, '');
+  }
+              {/* Show instructions, stripped of HTML tags, if present */}
+              {recipe.instructions && (
+                <div className="small mb-2 magazine-recipe-instructions" style={{ color: '#444' }}>
+                  {stripHtml(recipe.instructions).length > 120
+                    ? stripHtml(recipe.instructions).slice(0, 120) + '...'
+                    : stripHtml(recipe.instructions)}
+                </div>
+              )}
   const recipes = useSelector(state => state.recipes.recipes);
   const status = useSelector(state => state.recipes.status);
   const error = useSelector(state => state.recipes.error);
@@ -80,6 +93,14 @@ export default function RecipeList({ onEdit }) {
                   ? recipe.ingredients.slice(0, 60) + '...'
                   : recipe.ingredients || ''}
               </div>
+              {/* Show instructions, stripped of HTML tags, if present */}
+              {recipe.instructions && (
+                <div className="small mb-2 magazine-recipe-instructions" style={{ color: '#444' }}>
+                  {stripHtml(recipe.instructions).length > 120
+                    ? stripHtml(recipe.instructions).slice(0, 120) + '...'
+                    : stripHtml(recipe.instructions)}
+                </div>
+              )}
               <div className="d-flex gap-2 mt-auto">
                 <Button color="secondary" size="sm" onClick={() => onEdit(recipe)}>Edit</Button>
                 <Button color="info" size="sm" onClick={() => handleShare(recipe)}><span role="img" aria-label="Share">📤</span></Button>
