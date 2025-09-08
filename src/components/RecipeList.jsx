@@ -92,30 +92,28 @@ export default function RecipeList({ onEdit }) {
           </div>
         </div>
       )}
-      <div className="row g-4">
+      <div className="d-flex flex-column gap-3">
         {rest.map(recipe => (
-          <div className="col-12 col-sm-6 col-lg-4" key={recipe.id}>
-            <div className="card h-100 shadow-sm magazine-recipe-card position-relative overflow-hidden">
-              {recipe.imageUrl && (
-                <Image
-                  src={recipe.imageUrl.startsWith('http') ? recipe.imageUrl : `/uploads/${recipe.imageUrl}`}
-                  alt={recipe.name}
-                  style={{ width: '100%', height: 160, objectFit: 'cover', borderTopLeftRadius: '0.5rem', borderTopRightRadius: '0.5rem' }}
-                />
-              )}
-              <div className="card-body d-flex flex-column p-3">
-                <h5 className="fw-bold mb-2 text-truncate magazine-recipe-title">{recipe.name}</h5>
-                <div className="text-muted small mb-2 magazine-recipe-ingredients">
-                  {recipe.ingredients && recipe.ingredients.length > 60
-                    ? recipe.ingredients.slice(0, 60) + '...'
-                    : recipe.ingredients || ''}
-                </div>
-                <div className="d-flex gap-2 mt-auto">
-                  <Button color="secondary" size="sm" onClick={() => onEdit(recipe)}>Edit</Button>
-                  <Button color="info" size="sm" onClick={() => handleShare(recipe)}><span role="img" aria-label="Share">📤</span></Button>
-                  <Button color="danger" size="sm" onClick={() => dispatch(deleteRecipe(recipe.id))}>Delete</Button>
-                  <Button color={recipe.favorite ? 'warning' : 'outline-secondary'} size="sm" onClick={() => dispatch(toggleFavorite(recipe.id))}>{recipe.favorite ? '★' : '☆'}</Button>
-                </div>
+          <div className="card shadow-sm magazine-recipe-card position-relative overflow-hidden" key={recipe.id}>
+            {recipe.imageUrl && (
+              <Image
+                src={recipe.imageUrl.startsWith('http') ? recipe.imageUrl : `/uploads/${recipe.imageUrl}`}
+                alt={recipe.name}
+                style={{ width: '100%', height: 120, objectFit: 'cover', borderTopLeftRadius: '0.5rem', borderTopRightRadius: '0.5rem' }}
+              />
+            )}
+            <div className="card-body d-flex flex-column p-3">
+              <h5 className="fw-bold mb-2 text-truncate magazine-recipe-title">{recipe.name}</h5>
+              <div className="text-muted small mb-2 magazine-recipe-ingredients">
+                {recipe.ingredients && recipe.ingredients.length > 60
+                  ? recipe.ingredients.slice(0, 60) + '...'
+                  : recipe.ingredients || ''}
+              </div>
+              <div className="d-flex gap-2 mt-auto">
+                <Button color="secondary" size="sm" onClick={() => onEdit(recipe)}>Edit</Button>
+                <Button color="info" size="sm" onClick={() => handleShare(recipe)}><span role="img" aria-label="Share">📤</span></Button>
+                <Button color="danger" size="sm" onClick={() => dispatch(deleteRecipe(recipe.id))}>Delete</Button>
+                <Button color={recipe.favorite ? 'warning' : 'outline-secondary'} size="sm" onClick={() => dispatch(toggleFavorite(recipe.id))}>{recipe.favorite ? '★' : '☆'}</Button>
               </div>
             </div>
           </div>
