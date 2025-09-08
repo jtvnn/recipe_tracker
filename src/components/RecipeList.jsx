@@ -4,7 +4,6 @@ import { getRecipes, deleteRecipe, toggleFavorite } from '../redux/recipesSlice'
 import { ListGroup, ListGroupItem, Button } from 'reactstrap';
 import { Image } from 'react-bootstrap';
 
-
 function getShareUrl(recipeId) {
   // Use current location as base, fallback to window.location if available
   const base = typeof window !== 'undefined' ? window.location.origin : '';
@@ -35,14 +34,6 @@ export default function RecipeList({ onEdit }) {
     if (!html) return '';
     return html.replace(/<[^>]+>/g, '');
   }
-              {/* Show instructions, stripped of HTML tags, if present */}
-              {recipe.instructions && (
-                <div className="small mb-2 magazine-recipe-instructions" style={{ color: '#444' }}>
-                  {stripHtml(recipe.instructions).length > 120
-                    ? stripHtml(recipe.instructions).slice(0, 120) + '...'
-                    : stripHtml(recipe.instructions)}
-                </div>
-              )}
   const recipes = useSelector(state => state.recipes.recipes);
   const status = useSelector(state => state.recipes.status);
   const error = useSelector(state => state.recipes.error);
