@@ -29,7 +29,9 @@ const allowedOrigins = [
   'https://recipe-tracker-4xjvl12d-jtvnns-projects.vercel.app',
   'https://recipe-tracker-1-lqbn.onrender.com'
 ];
-app.use(cors({
+
+app.use(cors());
+/*app.use(cors({
   origin: function(origin, callback) {
     // Allow requests with no origin (like curl, mobile apps, etc.)
     if (!origin) return callback(null, true);
@@ -43,7 +45,7 @@ app.use(cors({
   allowedHeaders: ['Content-Type', 'Authorization'],
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
   optionsSuccessStatus: 200
-}));
+})); */
 
 // --- CORS config: must be first ---
 
