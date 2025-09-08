@@ -78,7 +78,7 @@ export default function RecipeList({ onEdit }) {
           )}
           <div className="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-4" style={{ background: 'linear-gradient(180deg,rgba(0,0,0,0.1) 60%,rgba(0,0,0,0.7) 100%)' }}>
             <h3 className="text-white fw-bold" style={{ fontSize: '2rem', textShadow: '0 2px 8px #000' }}>{featured.name}</h3>
-            <div className="text-white-50 mb-2" style={{ fontSize: '1.1rem', textShadow: '0 1px 4px #000' }}>
+            <div className="mb-2" style={{ color: '#fff', fontSize: '1.1rem', textShadow: '0 1px 4px #000' }}>
               {featured.ingredients && featured.ingredients.length > 80
                 ? featured.ingredients.slice(0, 80) + '...'
                 : featured.ingredients || ''}
@@ -104,7 +104,7 @@ export default function RecipeList({ onEdit }) {
             )}
             <div className="card-body d-flex flex-column p-3">
               <h5 className="fw-bold mb-2 text-truncate magazine-recipe-title">{recipe.name}</h5>
-              <div className="text-muted small mb-2 magazine-recipe-ingredients">
+              <div className="small mb-2 magazine-recipe-ingredients" style={{ color: '#fff', textShadow: '0 1px 4px #000' }}>
                 {recipe.ingredients && recipe.ingredients.length > 60
                   ? recipe.ingredients.slice(0, 60) + '...'
                   : recipe.ingredients || ''}
