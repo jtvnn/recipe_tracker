@@ -68,30 +68,30 @@ export default function RecipeList({ onEdit }) {
         </button>
       </div>
           {featured && (
-            <div className="card mb-4 shadow-lg magazine-featured-card position-relative overflow-hidden" style={{ minHeight: 220, boxShadow: '0 6px 32px rgba(0,0,0,0.18), 0 1.5px 6px rgba(0,0,0,0.12)' }}>
-          {featured.imageUrl && (
-            <Image
-              src={featured.imageUrl.startsWith('http') ? featured.imageUrl : `/uploads/${featured.imageUrl}`}
-              alt={featured.name}
-              style={{ width: '100%', height: 220, objectFit: 'cover', filter: 'brightness(0.85)' }}
-            />
+            <div className="card shadow-lg magazine-recipe-card position-relative overflow-hidden mb-4" style={{ boxShadow: '0 6px 32px rgba(0,0,0,0.18), 0 1.5px 6px rgba(0,0,0,0.12)' }}>
+              {featured.imageUrl && (
+                <Image
+                  src={featured.imageUrl.startsWith('http') ? featured.imageUrl : `/uploads/${featured.imageUrl}`}
+                  alt={featured.name}
+                  style={{ width: '100%', height: 120, objectFit: 'cover', borderTopLeftRadius: '0.5rem', borderTopRightRadius: '0.5rem' }}
+                />
+              )}
+              <div className="card-body d-flex flex-column p-3">
+                <h5 className="fw-bold mb-2 text-truncate magazine-recipe-title">{featured.name}</h5>
+                <div className="small mb-2 magazine-recipe-ingredients" style={{ color: '#111' }}>
+                  {featured.ingredients && featured.ingredients.length > 60
+                    ? featured.ingredients.slice(0, 60) + '...'
+                    : featured.ingredients || ''}
+                </div>
+                <div className="d-flex gap-2 mt-auto">
+                  <Button color="secondary" size="sm" onClick={() => onEdit(featured)}>Edit</Button>
+                  <Button color="info" size="sm" onClick={() => handleShare(featured)}><span role="img" aria-label="Share">📤</span></Button>
+                  <Button color="danger" size="sm" onClick={() => dispatch(deleteRecipe(featured.id))}>Delete</Button>
+                  <Button color={featured.favorite ? 'warning' : 'outline-secondary'} size="sm" onClick={() => dispatch(toggleFavorite(featured.id))}>{featured.favorite ? '★' : '☆'}</Button>
+                </div>
+              </div>
+            </div>
           )}
-          <div className="position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-end p-4" style={{ background: 'linear-gradient(180deg,rgba(0,0,0,0.1) 60%,rgba(0,0,0,0.7) 100%)' }}>
-            <h3 className="text-white fw-bold" style={{ fontSize: '2rem', textShadow: '0 2px 8px #000' }}>{featured.name}</h3>
-            <div className="mb-2" style={{ color: '#111', fontSize: '1.1rem' }}>
-              {featured.ingredients && featured.ingredients.length > 80
-                ? featured.ingredients.slice(0, 80) + '...'
-                : featured.ingredients || ''}
-            </div>
-            <div className="d-flex gap-2">
-              <Button color="secondary" size="sm" onClick={() => onEdit(featured)}>Edit</Button>
-              <Button color="info" size="sm" onClick={() => handleShare(featured)}><span role="img" aria-label="Share">📤</span> Share</Button>
-              <Button color="danger" size="sm" onClick={() => dispatch(deleteRecipe(featured.id))}>Delete</Button>
-              <Button color={featured.favorite ? 'warning' : 'outline-light'} size="sm" onClick={() => dispatch(toggleFavorite(featured.id))}>{featured.favorite ? '★' : '☆'}</Button>
-            </div>
-          </div>
-        </div>
-      )}
       <div className="d-flex flex-column gap-3">
         {rest.map(recipe => (
               <div className="card shadow-lg magazine-recipe-card position-relative overflow-hidden" key={recipe.id} style={{ boxShadow: '0 6px 32px rgba(0,0,0,0.18), 0 1.5px 6px rgba(0,0,0,0.12)' }}>
